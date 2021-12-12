@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  receiver:
+    build: projektarbete-receiver
+    ports:
+      - "8080:8080"
+    depends_on:
+      - artemis
+      - db
+  sender:
+    build: projektarbete-sender
+    ports:
+      - "8081:8080"
+    depends_on:
+      - artemis
+      - db
+  artemis:
+    image: amusarra/apache-artemis:2.17.0
+    ports:
+      - "8161:8161"
+      - "61616:61616"
+  db:
+    image: mariadb:10.5
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: mypass
+      MYSQL_DATABASE: chat
