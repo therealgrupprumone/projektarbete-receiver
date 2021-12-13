@@ -12,19 +12,19 @@ services:
     build: projektarbete-sender
     ports:
       - "8081:8080"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-    command:
-      - --spring.profiles.active=dev
     depends_on:
       - artemis
       - db
   artemis:
-    # Byt nedan till 'vromero/activemq-artemis' för icke arm64/Mac M1
-    image: amusarra/apache-artemis:2.17.0
+    # arm - image: amusarra/apache-artemis:2.17.0
+    # x64 - image: vromero/activemq-artemis
+    image: vromero/activemq-artemis
     ports:
       - "8161:8161"
       - "61616:61616"
+    environment:
+      ARTEMIS_USERNAME: "artemis"
+      ARTEMIS_PASSWORD: "simetraehcapa"
   db:
     image: mariadb:10.5
     ports:
@@ -32,3 +32,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: mypass
       MYSQL_DATABASE: chat
+    volumes:
+      - db_data:/var/lib/mysql/data
+volumes:
+  db_data: {}
