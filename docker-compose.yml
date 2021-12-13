@@ -12,6 +12,10 @@ services:
     build: projektarbete-sender
     ports:
       - "8081:8080"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dev"
+    command:
+      - --spring.profiles.active=dev
     depends_on:
       - artemis
       - db
