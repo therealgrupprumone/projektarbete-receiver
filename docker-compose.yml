@@ -3,6 +3,8 @@ version: "3.9"
 services:
   receiver:
     build: projektarbete-receiver
+    command:
+      - -Drun.arguments=--spring.mail.username=f07a5315f7c9a5,--spring.mail.password=763b08ae0d8416
     ports:
       - "8080:8080"
     depends_on:
@@ -12,10 +14,6 @@ services:
     build: projektarbete-sender
     ports:
       - "8081:8080"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=dev"
-    command:
-      - --spring.profiles.active=dev
     depends_on:
       - artemis
       - db
@@ -25,6 +23,9 @@ services:
     ports:
       - "8161:8161"
       - "61616:61616"
+    environment:
+      ARTEMIS_USERNAME: "artemis"
+      ARTEMIS_PASSWORD: "artemis"
   db:
     image: mariadb:10.5
     ports:
@@ -32,3 +33,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: mypass
       MYSQL_DATABASE: chat
+    volumes:
+      - db_data:/var/lib/mysql/data
+volumes:
+  db_data: {}
